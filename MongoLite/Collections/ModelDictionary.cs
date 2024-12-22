@@ -5,13 +5,13 @@ using System.Diagnostics.CodeAnalysis;
 namespace MongoLite.Collections
 {
     /// <summary>
-    ///     A dictionary for <see cref="IModel"/> elements. This dictionary type is designed for non-nullability, and it will return a default value if the key is not found.
+    ///     A dictionary for <see cref="IBsonEntity"/> elements. This dictionary type is designed for non-nullability, and it will return a default value if the key is not found.
     /// </summary>
     /// <remarks> 
-    ///     The default value is a stateless instance of <typeparamref name="TValue"/>, retrieved from <see cref="IModel.GetStateless{T}"/>. This object is populated with values set at <see langword="new"/> and is not saved to the database.
+    ///     The default value is a stateless instance of <typeparamref name="TValue"/>, retrieved from <see cref="IBsonEntity.GetStateless{T}"/>. This object is populated with values set at <see langword="new"/> and is not saved to the database.
     /// </remarks>
     /// <typeparam name="TKey">The key from which database entries are indexed.</typeparam>
-    /// <typeparam name="TValue">The <see cref="IModel"/> element for which <typeparamref name="TKey"/> stands as an indexer.</typeparam>
+    /// <typeparam name="TValue">The <see cref="IBsonEntity"/> element for which <typeparamref name="TKey"/> stands as an indexer.</typeparam>
     public sealed class ModelDictionary<TKey, TValue>(Action<TKey, TValue>? valueTransform = null) : IDictionary<TKey, TValue>
         where TKey : notnull
         where TValue : IBsonEntity, new()
@@ -69,10 +69,10 @@ namespace MongoLite.Collections
         public bool IsReadOnly { get; } = false;
 
         /// <summary>
-        ///     = <see cref="IModel.GetStateless{T}"/>.
+        ///     = <see cref="IBsonEntity.GetStateless{T}"/>.
         /// </summary>
         /// <remarks>
-        ///     Gets the default value for the dictionary. This value is a stateless instance of <typeparamref name="TValue"/>, retrieved from <see cref="IModel.GetStateless{T}"/>.
+        ///     Gets the default value for the dictionary. This value is a stateless instance of <typeparamref name="TValue"/>, retrieved from <see cref="IBsonEntity.GetStateless{T}"/>.
         ///     This object is populated with values set at <see langword="new"/> and is not saved to the database.
         /// </remarks>
         public TValue Default { get; } = IBsonEntity.GetStateless<TValue>();
@@ -82,6 +82,11 @@ namespace MongoLite.Collections
         /// </summary>
         public Action<TKey, TValue>? ValueTransform { get; set; } = valueTransform;
 
+        /// <summary>
+        ///     Creates a new instance of <see cref="ModelDictionary{TKey, TValue}"/>.
+        /// </summary>
+        /// <param name="implementationObject"></param>
+        /// <param name="valueTransform"></param>
         public ModelDictionary(Dictionary<TKey, TValue?> implementationObject, Action<TKey, TValue>? valueTransform = null)
             : this(valueTransform)
         {

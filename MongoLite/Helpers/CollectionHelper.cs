@@ -3,6 +3,9 @@ using MongoLite.Collections;
 
 namespace MongoLite.Helpers
 {
+    /// <summary>
+    ///     Represents a helper class for asynchronous cursor collections retrieved from the database.
+    /// </summary>
     public static class CollectionHelper
     {
         /// <summary>

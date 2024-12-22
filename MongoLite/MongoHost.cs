@@ -7,7 +7,12 @@ using MongoLite.Bson;
 
 namespace MongoLite
 {
-    public class MongoContext(ILogger<MongoContext> logger, IConfiguration configuration) : IHostedService
+    /// <summary>
+    ///     A hosted service that connects to a MongoDB database, allowing use of a statically available <see cref="IMongoDatabase"/> instance.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="configuration"></param>
+    public class MongoHost(ILogger<MongoHost> logger, IConfiguration configuration) : IHostedService
     {
         private static MongoClient? _client;
         private static IMongoDatabase? _database;
@@ -41,6 +46,11 @@ namespace MongoLite
             throw new MongoClientException("The database timed out.");
         }
 
+        /// <summary>
+        ///     Runs a command on the database.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         public static string RunCommand(string command)
         {
             try
@@ -54,6 +64,7 @@ namespace MongoLite
             }
         }
 
+        /// <inheritdoc />
         public Task StartAsync(CancellationToken cancellationToken)
         {
             if (_url is not null)
@@ -86,6 +97,7 @@ namespace MongoLite
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc />
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogError("Database disconnecting...");
