@@ -6,9 +6,17 @@ using System.Runtime.CompilerServices;
 namespace MongoLite.Helpers
 {
     internal static class BsonModelHelper<T>
-        where T : BsonEntityBase, new()
+        where T : BsonEntity, new()
     {
         public static readonly BsonCollection<T> Collection = new(typeof(T).Name[..^7]);
+
+        public static async Task SaveAsync(T model, CancellationToken cancellationToken = default)
+        {
+            if (model.State is EntityState.Stateless)
+                return;
+
+            await Collection.InsertOrUpdateDocumentAsync(model, cancellationToken);
+        }
 
         public static async Task<T> CreateAsync(Action<T>? creationAction = null, CancellationToken cancellationToken = default)
         {
@@ -21,14 +29,6 @@ namespace MongoLite.Helpers
             value.State = EntityState.Ready;
 
             return value;
-        }
-
-        public static async Task<bool> SaveAsync(T model, UpdateDefinition<T> updateDefinition, CancellationToken cancellationToken = default)
-        {
-            if (model.State is EntityState.Stateless or EntityState.Deleted or EntityState.Deserializing)
-                return false;
-
-            return await Collection.ModifyDocumentAsync(model, updateDefinition, cancellationToken);
         }
 
         public static async Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)

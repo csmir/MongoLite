@@ -28,11 +28,11 @@ namespace MongoLite
         /// <summary>
         ///     Gets a <see cref="MongoCollectionBase{T}"/> for the specified <typeparamref name="T"/> model.
         /// </summary>
-        /// <typeparam name="T">The implementation of <see cref="IBsonEntity"/> to get a collection for.</typeparam>
+        /// <typeparam name="T">The implementation of <see cref="BsonEntity"/> to get a collection for.</typeparam>
         /// <param name="name">The name of the collection.</param>
         /// <returns></returns>
         public static IMongoCollection<T> GetMongoCollection<T>(string name)
-            where T : IBsonEntity, new()
+            where T : BsonEntity, new()
         {
             if (WaitConnection())
             {

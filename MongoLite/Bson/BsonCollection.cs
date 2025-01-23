@@ -11,7 +11,7 @@ namespace MongoLite.Bson
     /// <typeparam name="T"></typeparam>
     /// <param name="name"></param>
     public class BsonCollection<T>(string name) : IBsonCollection<T>
-        where T : BsonEntityBase, new()
+        where T : BsonEntity, new()
     {
         private readonly IMongoCollection<T> _collection = MongoHost.GetMongoCollection<T>(name);
 
@@ -61,6 +61,10 @@ namespace MongoLite.Bson
         /// <inheritdoc />
         public virtual async Task<bool> ModifyDocumentAsync(T document, UpdateDefinition<T> update, CancellationToken cancellationToken = default)
             => (await _collection.UpdateOneAsync(x => x.ObjectId == document.ObjectId, update, cancellationToken: cancellationToken)).IsAcknowledged;
+
+        /// <inheritdoc />
+        public virtual async Task<bool> ModifyDocumentAsync(ObjectId objectId, UpdateDefinition<T> update, CancellationToken cancellationToken = default)
+            => (await _collection.UpdateOneAsync(x => x.ObjectId == objectId, update, cancellationToken: cancellationToken)).IsAcknowledged;
 
         /// <inheritdoc />
         public virtual async Task<bool> DeleteDocumentAsync(T document, CancellationToken cancellationToken = default)

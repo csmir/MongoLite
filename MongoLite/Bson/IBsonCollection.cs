@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Linq.Expressions;
 
 namespace MongoLite.Bson
@@ -8,7 +9,7 @@ namespace MongoLite.Bson
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IBsonCollection<T>
-        where T : IBsonEntity, new()
+        where T : BsonEntity, new()
     {
         /// <summary>
         ///     Inserts a document into the collection.
@@ -54,11 +55,11 @@ namespace MongoLite.Bson
         /// <summary>
         ///     Modifies a document in the collection.
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="objectId"></param>
         /// <param name="update"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<bool> ModifyDocumentAsync(T document, UpdateDefinition<T> update, CancellationToken cancellationToken = default);
+        public Task<bool> ModifyDocumentAsync(ObjectId objectId, UpdateDefinition<T> update, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a document from the collection.

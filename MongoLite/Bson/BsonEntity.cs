@@ -1,14 +1,41 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using MongoLite.Helpers;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace MongoLite.Bson
 {
     /// <summary>
-    ///     An interface that represents a BSON entity.
+    ///     Represents a base class for BSON entities, having a strongly-typed collection implementation.
     /// </summary>
-    public interface IBsonEntity
+    public abstract class AtomicEntity<T> : BsonEntity
+        where T : AtomicEntity<T>, new()
     {
+        /// <summary>
+        ///     Saves a field in the entity atomically.
+        /// </summary>
+        protected void Save<TField>(TField value, [CallerMemberName] string? fieldName = null)
+        {
+            if (State is EntityState.Stateless or EntityState.Deleted or EntityState.Deserializing)
+                return;
+
+            BsonModelHelper<T>.Collection.ModifyDocumentAsync(ObjectId, Builders<T>.Update.Set(fieldName!, value)).Wait();
+        }
+    }
+
+    /// <summary>
+    ///     Represents a base class for BSON entities.
+    /// </summary>
+    public abstract class BsonEntity
+    {
+        /// <summary>
+        ///     Gets or sets the object ID of the entity.
+        /// </summary>
+        [BsonId]
+        public ObjectId ObjectId { get; set; }
+
         /// <summary>
         ///     Gets or sets the date and time when the entity was created.
         /// </summary>
@@ -18,7 +45,7 @@ namespace MongoLite.Bson
         ///     Gets or sets the state of the entity. This property is ignored by the BSON serializer.
         /// </summary>
         [BsonIgnore]
-        public abstract EntityState State { get; set; }
+        public EntityState State { get; set; }
 
         /// <summary>
         ///     Gets a stateless instance of the entity, without database bindings.
@@ -26,7 +53,7 @@ namespace MongoLite.Bson
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T GetStateless<T>()
-            where T : IBsonEntity, new() => new()
+            where T : BsonEntity, new() => new()
             {
                 State = EntityState.Stateless
             };
@@ -39,7 +66,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static Task<T> CreateAsync<T>(Action<T>? creationAction = null, CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.CreateAsync(creationAction, cancellationToken);
 
         /// <summary>
@@ -49,7 +76,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static Task<T?> GetFirstAsync<T>(CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.GetAsync(x => true, cancellationToken);
 
         /// <summary>
@@ -60,7 +87,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static Task<T?> GetAsync<T>(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.GetAsync(filter, cancellationToken);
 
         /// <summary>
@@ -71,7 +98,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static IAsyncEnumerable<T> GetManyAsync<T>(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.GetManyAsync(filter, cancellationToken);
 
         /// <summary>
@@ -81,7 +108,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static IAsyncEnumerable<T> GetAllAsync<T>(CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.GetManyAsync(x => true, cancellationToken);
 
         /// <summary>
@@ -92,7 +119,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static Task<long> DeleteManyAsync<T>(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.DeleteManyAsync(filter, cancellationToken);
 
         /// <summary>
@@ -103,7 +130,7 @@ namespace MongoLite.Bson
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static Task<long> GetCountAsync<T>(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
-            where T : BsonEntityBase, new()
+            where T : BsonEntity, new()
             => BsonModelHelper<T>.GetCountAsync(filter, cancellationToken);
     }
 }
