@@ -7,9 +7,9 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<AssemblyVersion>1.1</AssemblyVersion>
-		<PackageVersion>1.1.0</PackageVersion>
-		<FileVersion>1.1.0.0</FileVersion>
+		<AssemblyVersion>1.2</AssemblyVersion>
+		<PackageVersion>1.2.0</PackageVersion>
+		<FileVersion>1.2.0.0</FileVersion>
 
 		<PackageId>MongoLite</PackageId>
 

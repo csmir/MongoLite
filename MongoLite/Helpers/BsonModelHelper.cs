@@ -1,5 +1,4 @@
-﻿using MongoDB.Driver;
-using MongoLite.Bson;
+﻿using MongoLite.Bson;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoLite.Bson;
 
@@ -44,24 +43,6 @@ namespace MongoLite
             }
 
             throw new MongoClientException("The database timed out.");
-        }
-
-        /// <summary>
-        ///     Runs a command on the database.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public static string RunCommand(string command)
-        {
-            try
-            {
-                var result = _database?.RunCommand<BsonDocument>(BsonDocument.Parse(command));
-                return result.ToJson();
-            }
-            catch (Exception ex) when (ex is FormatException or MongoCommandException)
-            {
-                throw;
-            }
         }
 
         /// <inheritdoc />
