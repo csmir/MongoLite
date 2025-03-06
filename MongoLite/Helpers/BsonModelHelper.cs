@@ -7,7 +7,7 @@ namespace MongoLite.Helpers
     internal static class BsonModelHelper<T>
         where T : BsonEntity, new()
     {
-        public static readonly BsonCollection<T> Collection = new(typeof(T).Name[..^7]);
+        public static readonly BsonCollection<T> Collection = new(typeof(T).Name);
 
         public static async Task SaveAsync(T model, CancellationToken cancellationToken = default)
         {
