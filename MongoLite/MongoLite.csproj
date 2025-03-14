@@ -7,13 +7,13 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<AssemblyVersion>1.2</AssemblyVersion>
-		<PackageVersion>1.2.1</PackageVersion>
-		<FileVersion>1.2.1.0</FileVersion>
+		<AssemblyVersion>1.3</AssemblyVersion>
+		<PackageVersion>1.3.0</PackageVersion>
+		<FileVersion>1.3.0.0</FileVersion>
 
 		<PackageId>MongoLite</PackageId>
 
-		<Authors>Simir.</Authors>
+		<Authors>csmir</Authors>
 		<Title>MongoLite</Title>
 		<Description>An atomic MongoDB data access layer with concurrent ideology.</Description>
 		<PackageTags>mongo, database, atomic</PackageTags>
