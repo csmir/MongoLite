@@ -9,12 +9,12 @@ namespace MongoLite.Helpers
     {
         public static readonly BsonCollection<T> Collection = new(typeof(T).Name);
 
-        public static async Task SaveAsync(T model, CancellationToken cancellationToken = default)
+        public static async Task<bool> UpdateAsync(T model, CancellationToken cancellationToken = default)
         {
-            if (model.State is EntityState.Stateless)
-                return;
+            if (model.State is EntityState.Stateless or EntityState.Deleted)
+                return false;
 
-            await Collection.InsertOrUpdateDocumentAsync(model, cancellationToken);
+            return await Collection.InsertOrUpdateDocumentAsync(model, cancellationToken);
         }
 
         public static async Task<T> CreateAsync(Action<T>? creationAction = null, CancellationToken cancellationToken = default)

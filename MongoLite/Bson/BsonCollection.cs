@@ -32,7 +32,11 @@ namespace MongoLite.Bson
                 return true;
             }
 
-            await _collection.ReplaceOneAsync(x => x.ObjectId == document.ObjectId, document, cancellationToken: cancellationToken);
+            var result = await _collection.ReplaceOneAsync(x => x.ObjectId == document.ObjectId, document, cancellationToken: cancellationToken);
+
+            if (result.IsAcknowledged && result.ModifiedCount > 0)
+                return true;
+
             return false;
         }
 

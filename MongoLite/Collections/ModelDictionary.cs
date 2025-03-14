@@ -1,5 +1,6 @@
 ﻿using MongoLite.Bson;
 using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MongoLite.Collections
@@ -39,31 +40,16 @@ namespace MongoLite.Collections
         }
 
         /// <inheritdoc />
-        public ICollection<TKey> Keys
-        {
-            get
-            {
-                return _impl.Keys;
-            }
-        }
+        public ICollection<TKey> Keys 
+            => _impl.Keys;
 
         /// <inheritdoc />
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                return _impl.Values!;
-            }
-        }
+        public ICollection<TValue> Values 
+            => _impl.Values!;
 
         /// <inheritdoc />
-        public int Count
-        {
-            get
-            {
-                return _impl.Count;
-            }
-        }
+        public int Count 
+            => _impl.Count;
 
         /// <inheritdoc />
         public bool IsReadOnly { get; } = false;
@@ -103,22 +89,16 @@ namespace MongoLite.Collections
         /// <remarks>
         ///     This method will not return the default value for <typeparamref name="TValue"/> if the key is not found.
         /// </remarks>
-        public bool ContainsKey(TKey key)
-        {
-            return _impl.ContainsKey(key);
-        }
+        public bool ContainsKey(TKey key) 
+            => _impl.ContainsKey(key);
 
         /// <inheritdoc />
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return _impl.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() 
+            => _impl.GetEnumerator();
 
         /// <inheritdoc />
-        public bool Remove(TKey key)
-        {
-            return _impl.Remove(key);
-        }
+        public bool Remove(TKey key) 
+            => _impl.Remove(key);
 
         /// <inheritdoc />
         /// <remarks>
@@ -139,55 +119,37 @@ namespace MongoLite.Collections
             return false;
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         void ICollection<KeyValuePair<TKey, TValue>>.Clear()
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     This method is not implemented.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();

@@ -70,6 +70,16 @@ namespace MongoLite.Bson
             => BsonModelHelper<T>.CreateAsync(creationAction, cancellationToken);
 
         /// <summary>
+        ///     Creates a new instance of the entity synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="creationAction"></param>
+        /// <returns></returns>
+        public static T Create<T>(Action<T>? creationAction = null)
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.CreateAsync(creationAction).GetAwaiter().GetResult();
+
+        /// <summary>
         ///     Gets the first entity in the collection.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -78,6 +88,15 @@ namespace MongoLite.Bson
         public static Task<T?> GetFirstAsync<T>(CancellationToken cancellationToken = default)
             where T : BsonEntity, new()
             => BsonModelHelper<T>.GetAsync(x => true, cancellationToken);
+
+        /// <summary>
+        ///     Gets the first entity in the collection synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T? GetFirst<T>()
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.GetAsync(x => true).GetAwaiter().GetResult();
 
         /// <summary>
         ///     Gets the first entity that matches the filter.
@@ -91,6 +110,16 @@ namespace MongoLite.Bson
             => BsonModelHelper<T>.GetAsync(filter, cancellationToken);
 
         /// <summary>
+        ///     Gets the first entity that matches the filter synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static T? Get<T>(Expression<Func<T, bool>> filter)
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.GetAsync(filter).GetAwaiter().GetResult();
+
+        /// <summary>
         ///     Gets all entities that match the filter.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -102,6 +131,16 @@ namespace MongoLite.Bson
             => BsonModelHelper<T>.GetManyAsync(filter, cancellationToken);
 
         /// <summary>
+        ///     Gets all entities that match the filter synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> GetMany<T>(Expression<Func<T, bool>> filter)
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.GetManyAsync(filter).ToListAsync().GetAwaiter().GetResult();
+
+        /// <summary>
         ///     Gets all entities in the collection.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -110,6 +149,15 @@ namespace MongoLite.Bson
         public static IAsyncEnumerable<T> GetAllAsync<T>(CancellationToken cancellationToken = default)
             where T : BsonEntity, new()
             => BsonModelHelper<T>.GetManyAsync(x => true, cancellationToken);
+
+        /// <summary>
+        ///     Gets all entities in the collection synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<T> GetAll<T>()
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.GetManyAsync(x => true).ToListAsync().GetAwaiter().GetResult();
 
         /// <summary>
         ///     Deletes all entities that match the filter.
@@ -123,6 +171,16 @@ namespace MongoLite.Bson
             => BsonModelHelper<T>.DeleteManyAsync(filter, cancellationToken);
 
         /// <summary>
+        ///     Deletes all entities that match the filter synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static long DeleteMany<T>(Expression<Func<T, bool>> filter)
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.DeleteManyAsync(filter).GetAwaiter().GetResult();
+
+        /// <summary>
         ///     Gets the count of entities that match the filter.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -132,5 +190,15 @@ namespace MongoLite.Bson
         public static Task<long> GetCountAsync<T>(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
             where T : BsonEntity, new()
             => BsonModelHelper<T>.GetCountAsync(filter, cancellationToken);
+
+        /// <summary>
+        ///     Gets the count of entities that match the filter synchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static long GetCount<T>(Expression<Func<T, bool>> filter)
+            where T : BsonEntity, new()
+            => BsonModelHelper<T>.GetCountAsync(filter).GetAwaiter().GetResult();
     }
 }
